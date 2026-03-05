@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: Innowise_Java_Advanced_Course_User-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:placeholder}
+    username: ${DB_USERNAME:placeholder}
+    password: ${DB_PASSWORD:placeholder}
+
+  liquibase:
+    change-log: db/changelog/main-changelog.xml

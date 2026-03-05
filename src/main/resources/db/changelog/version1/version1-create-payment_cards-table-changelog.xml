@@ -1,0 +1,35 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_payments" author="tabletka97">
+        <createTable tableName="payment_cards">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_cards_users"
+                             referencedTableName="users"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="number" type="varchar"/>
+            <column name="holder" type="varchar"/>
+            <column name="expiration_date" type="date"/>
+            <column name="active" type="varchar"/>
+            <column name="createdAt" type="datetime2"/>
+            <column name="updatedAt" type="datetime2"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add_userid_index" author="tabletka97">
+        <createIndex tableName="payment_cards" indexName="idx_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="payment_cards" indexName="idx_number" unique="true">
+            <column name="number"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
