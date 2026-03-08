@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class InnowiseJavaAdvancedCourseUserServiceApplication {
+public class ApplicationRunner {
 
 	public static void main(String[] args) {
-		SpringApplication.run(InnowiseJavaAdvancedCourseUserServiceApplication.class, args);
+		SpringApplication.run(ApplicationRunner.class, args);
 	}
-
 }

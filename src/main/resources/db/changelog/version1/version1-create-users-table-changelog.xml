@@ -29,5 +29,17 @@
             <column name="email"/>
         </createIndex>
     </changeSet>
+    
+    <changeSet id="renaming_users_date_columns" author="tabletka97">
+        <renameColumn tableName="users" oldColumnName="createdAt"
+                      newColumnName="created_at"/>
+        <renameColumn tableName="users" oldColumnName="updatedAt"
+                      newColumnName="updated_at"/>
+    </changeSet>
+
+    <changeSet id="users_active_datatype_change" author="tabletka97">
+        <modifyDataType tableName="users" columnName="active"
+                        newDataType="boolean"/>
+    </changeSet>
 
 </databaseChangeLog>

@@ -32,4 +32,16 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="renaming_payment_cards_date_columns" author="tabletka97">
+        <renameColumn tableName="payment_cards" oldColumnName="createdAt"
+                      newColumnName="created_at"/>
+        <renameColumn tableName="payment_cards" oldColumnName="updatedAt"
+                      newColumnName="updated_at"/>
+    </changeSet>
+    
+    <changeSet id="payment_cards_active_datatype_change" author="tabletka97">
+        <modifyDataType tableName="payment_cards" columnName="active"
+                        newDataType="boolean"/>
+    </changeSet>
+
 </databaseChangeLog>
