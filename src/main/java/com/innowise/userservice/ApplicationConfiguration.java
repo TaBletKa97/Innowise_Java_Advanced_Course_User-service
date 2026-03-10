@@ -1,10 +1,10 @@
-package com.innowise.userservice.utils;
+package com.innowise.userservice;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
 @EnableJpaAuditing
-public class TestConfiguration {
+public class ApplicationConfiguration {
 
 }

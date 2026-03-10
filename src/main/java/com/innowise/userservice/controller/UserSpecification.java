@@ -1,4 +1,4 @@
-package com.innowise.userservice.model;
+package com.innowise.userservice.controller;
 
 import com.innowise.userservice.model.entity.User;
 import org.springframework.data.jpa.domain.Specification;
@@ -8,8 +8,7 @@ public class UserSpecification {
     public static Specification<User> containsName(String providedName) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
-                "%" + providedName.toLowerCase() + "%"
-        );
+                        "%" + providedName.toLowerCase() + "%");
     }
 
     public static Specification<User> containsSurname(String providedSurname) {

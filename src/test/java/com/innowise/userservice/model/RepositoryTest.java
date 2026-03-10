@@ -1,11 +1,13 @@
 package com.innowise.userservice.model;
 
-import com.innowise.userservice.utils.Constants;
-import com.innowise.userservice.utils.TestConfiguration;
+import com.innowise.userservice.ApplicationConfiguration;
+import com.innowise.userservice.controller.UserSpecification;
 import com.innowise.userservice.model.entity.PaymentCard;
 import com.innowise.userservice.model.entity.User;
+import com.innowise.userservice.model.exceptions.ActivationException;
 import com.innowise.userservice.model.interfaces.PaymentCardRepository;
 import com.innowise.userservice.model.interfaces.UserRepository;
+import com.innowise.userservice.utils.TestsConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,12 @@ import org.springframework.context.annotation.Import;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.innowise.userservice.utils.Constants.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.innowise.userservice.utils.TestsConstants.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(TestConfiguration.class)
+@Import(ApplicationConfiguration.class)
 class RepositoryTest {
 
     @Autowired
@@ -56,7 +58,7 @@ class RepositoryTest {
         jonCard.setExpirationDate(LocalDate.now().plusYears(2).minusMonths(3));
         jonCard.setActive(true);
 
-        arya.setName(Constants.NAME_ARYA);
+        arya.setName(TestsConstants.NAME_ARYA);
         arya.setSurname(STARK);
         arya.setBirthDate(LocalDate.now().minusYears(25));
         arya.setEmail(EMAIL_ARYA);
@@ -127,10 +129,12 @@ class RepositoryTest {
     }
 
     @Test
-    void activateUserTest() {
+    void activateUserTest() throws ActivationException {
         User ned = userRepository.findAll(UserSpecification.containsName(NAME_NED)).getFirst();
         long id = ned.getId();
         userRepository.activateUser(id);
+
+        assertThrows(ActivationException.class, () -> userRepository.activateUser(id));
 
         testEntityManager.flush();
         testEntityManager.clear();

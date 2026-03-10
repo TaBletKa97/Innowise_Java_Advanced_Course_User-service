@@ -1,6 +1,6 @@
 package com.innowise.userservice.utils;
 
-public class Constants {
+public class TestsConstants {
     public static  final String HOLDER_NAME_ARYA = "ARYASTARK";
     public static  final String HOLDER_NAME_JON = "JONSNOW";
     public static  final String NAME_ARYA = "Arya";
