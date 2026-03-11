@@ -11,7 +11,7 @@ VALUES
 ('Olga', 'Popova', '1993-11-25', 'olga@example.com', true, NOW(), NOW()),
 ('Sergey', 'Volkov', '1980-01-05', 'sergey@example.com', true, NOW(),NOW()),
 ('Anna', 'Sokolova', '1998-09-14', 'anna@example.com', true, NOW(),NOW()),
-('Pavel', 'Morozov', '1987-04-20', 'pavel@example.com', false, NOW(),NOW()),
+('Pavel', 'Sidorov', '1987-04-20', 'pavel@example.com', false, NOW(),NOW()),
 ('Natalia', 'Novikova', '1991-06-18', 'natalia@example.com', true, NOW(),NOW());
 INSERT INTO payment_cards (user_id, number, holder, expiration_date, active, created_at, updated_at)
 VALUES
