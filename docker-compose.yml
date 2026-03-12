@@ -1,0 +1,24 @@
+services:
+  redis:
+    image: redis:8.6.1-alpine
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  postgres:
+    image: postgres
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+
+volumes:
+  redis_data:
+  postgres_data:

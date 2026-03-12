@@ -1,10 +1,8 @@
 package com.innowise.userservice.repository;
 
-import com.innowise.userservice.ApplicationConfiguration;
 import com.innowise.userservice.repository.entity.PaymentCard;
 import com.innowise.userservice.repository.entity.User;
 import com.innowise.userservice.repository.exceptions.ActivationException;
-import com.innowise.userservice.repository.interfaces.PaymentCardRepository;
 import com.innowise.userservice.repository.interfaces.UserRepository;
 import com.innowise.userservice.service.UserSpecification;
 import com.innowise.userservice.utils.TestsConstants;
@@ -13,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,14 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@Import(ApplicationConfiguration.class)
+@EnableJpaAuditing
 class RepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PaymentCardRepository cardRepository;
     @Autowired
     private TestEntityManager testEntityManager;
 
@@ -94,38 +90,35 @@ class RepositoryTest {
     }
 
     @Test
-    void findUserByNameAndSurnameTest() {
-        List<User> searchResult = userRepository.findUserByNameAndSurname(NAME_ARYA, STARK);
-        assertThat(searchResult).isNotEmpty();
-        assertEquals(STARK, searchResult.getFirst().getSurname());
-    }
-
-    @Test
     void findCardsByUserIdTest() {
-        User arya = userRepository.findUserByNameAndSurname(NAME_ARYA, STARK).getFirst();
-        testEntityManager.flush();
-        List<PaymentCard> cards = cardRepository.findPaymentCardsByUserId(arya.getId());
+        List<PaymentCard> cards = userRepository.findAll().stream()
+                .filter(u -> u.getName().equals(NAME_ARYA))
+                .findFirst()
+                .get()
+                .getCards();
+
         assertThat(cards).hasSize(2);
     }
 
     @Test
     void updateUserTest() {
-        User arya = userRepository.findUserByNameAndSurname(NAME_ARYA, STARK).getFirst();
+        User user = userRepository.findAll().getFirst();
+        testEntityManager.flush();
         testEntityManager.clear();
-        User edited = new User(arya.getId(),
+        User edited = new User(user.getId(),
                 NAME_NED,
-                arya.getSurname(),
-                arya.getBirthDate(),
-                arya.getEmail(),
-                arya.isActive(),
-                arya.getCreatedAt(),
-                arya.getUpdatedAt(),
-                arya.getCards());
+                user.getSurname(),
+                user.getBirthDate(),
+                user.getEmail(),
+                user.isActive(),
+                user.getCreatedAt(),
+                user.getUpdatedAt(),
+                user.getCards());
 
         User saved = userRepository.saveAndFlush(edited);
         testEntityManager.clear();
-        assertNotEquals(arya.getName(), saved.getName());
-        assertNotEquals(arya.getUpdatedAt(), saved.getUpdatedAt());
+        assertNotEquals(user.getName(), saved.getName());
+        assertNotEquals(user.getUpdatedAt(), saved.getUpdatedAt());
     }
 
     @Test

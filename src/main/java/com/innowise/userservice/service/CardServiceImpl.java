@@ -46,9 +46,6 @@ public class CardServiceImpl implements CardService<CardResponseDTO, CardRequest
         User user = userRepository.findById(createRequest.userId())
                 .orElseThrow(() -> new NoSuchElementException(NO_USER_ERROR_MESSAGE
                         + createRequest.userId()));
-
-        user.getCards().forEach(PaymentCard::getId);
-
         if (user.getCards().size() >= 5) {
             throw new CardLimitViolationException();
         }
@@ -91,7 +88,6 @@ public class CardServiceImpl implements CardService<CardResponseDTO, CardRequest
     public List<CardResponseDTO> readAllCardsByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new NoSuchElementException(NO_USER_ERROR_MESSAGE + userId));
-        user.getCards().forEach(PaymentCard::getId);
         return mapper.cardsListToDtoList(user.getCards());
     }
 

@@ -11,7 +11,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy =
-        NullValuePropertyMappingStrategy.IGNORE)
+        NullValuePropertyMappingStrategy.IGNORE, uses = CardMapper.class)
 public interface UserMapper {
 
     List<UserResponseDTO> userListToDTOList(List<User> userList);
@@ -25,6 +25,5 @@ public interface UserMapper {
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "cards", ignore = true)
     void updateFromDto(UserRequestDTO request, @MappingTarget User target);
 }

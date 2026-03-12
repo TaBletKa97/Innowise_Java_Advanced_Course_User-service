@@ -45,7 +45,7 @@ public class PaymentCard implements BaseEntity<Long> {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 

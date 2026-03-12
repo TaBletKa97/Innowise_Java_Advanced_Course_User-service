@@ -8,11 +8,13 @@ import com.innowise.userservice.service.interfaces.UserService;
 import com.innowise.userservice.service.interfaces.mappers.UserMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,26 +30,34 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
     private final UserRepository repository;
     private final UserMapper mapper;
 
+
     @Override
+    @Cacheable(value = "user_list")
     public List<UserResponseDTO> readAll() {
         return mapper.userListToDTOList(repository.findAll());
     }
 
     @Override
+    @Cacheable(value = "user", key = "#id")
     public UserResponseDTO readById(Long id) {
         return mapper.userToUserDto(repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException(NO_USER_ERROR_MESSAGE + id)));
     }
 
     @Override
-    public UserResponseDTO create(@Validated UserRequestDTO createRequest) {
+    @CacheEvict(value = "user_list", allEntries = true)
+    public UserResponseDTO create(UserRequestDTO createRequest) {
         User user = mapper.userDtoToUser(createRequest);
         return mapper.userToUserDto(repository.saveAndFlush(user));
     }
 
     @Override
     @Transactional
-    public UserResponseDTO update(Long id, @Validated UserRequestDTO updateRequest) {
+    @Caching(evict = {
+            @CacheEvict(value = "user", key = "#id"),
+            @CacheEvict(value = "user_list", allEntries = true)
+    })
+    public UserResponseDTO update(Long id, UserRequestDTO updateRequest) {
         if (!Objects.equals(id, updateRequest.id())) {
             throw new IllegalArgumentException(
                     String.format("Path ID (%d) and Request ID (%d) must match",
@@ -63,6 +73,10 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "user", key = "#id"),
+            @CacheEvict(value = "user_list", allEntries = true)
+    })
     public void deleteById(Long id) {
         if (!repository.existsById(id)) {
             throw new NoSuchElementException("There is no user with id " + id);
@@ -72,18 +86,26 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "user", key = "#id"),
+            @CacheEvict(value = "user_list", allEntries = true)
+    })
     public UserResponseDTO activateUser(Long id) {
         return mapper.userToUserDto(repository.activateUser(id));
     }
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "user", key = "#id"),
+            @CacheEvict(value = "user_list", allEntries = true)
+    })
     public UserResponseDTO deactivateUser(Long id) {
         return mapper.userToUserDto(repository.deactivateUser(id));
     }
 
     @Override
-    public Page<UserResponseDTO> readAll(@Validated UserRequestDTO request,
+    public Page<UserResponseDTO> readAll(UserRequestDTO request,
                                          Pageable pageable) {
         Specification<User> spec = Specification.where(
                 (r, q, cb) -> null);

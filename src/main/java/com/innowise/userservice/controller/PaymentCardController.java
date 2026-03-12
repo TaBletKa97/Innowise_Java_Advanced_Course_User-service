@@ -5,7 +5,6 @@ import com.innowise.userservice.service.DTO.CardRequestDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +26,7 @@ public class PaymentCardController {
 
     @PostMapping
     public ResponseEntity<?> createCard(
-            @RequestBody @Validated CardRequestDTO request
+            @RequestBody CardRequestDTO request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cardService.create(request));
@@ -35,7 +34,7 @@ public class PaymentCardController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCard(
-            @RequestBody @Validated CardRequestDTO request,
+            @RequestBody CardRequestDTO request,
             @PathVariable("id") Long id
     ) {
         return ResponseEntity.status(HttpStatus.OK)

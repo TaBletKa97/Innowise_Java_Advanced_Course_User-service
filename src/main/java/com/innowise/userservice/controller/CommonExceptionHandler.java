@@ -30,7 +30,7 @@ public class CommonExceptionHandler {
     }
 
     @ExceptionHandler(exception = {ActivationException.class, DeactivationException.class,
-            NoSuchElementException.class, IllegalArgumentException.class})
+            IllegalArgumentException.class})
     public ResponseEntity<?> handlingIllegalArgumentException(Throwable e) {
 
         log.error("{}\n{}", e.getMessage(), Arrays.toString(e.getStackTrace()));
@@ -44,4 +44,10 @@ public class CommonExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(VALIDATION_PARAMS);
     }
 
+    @ExceptionHandler(exception = NoSuchElementException.class)
+    public ResponseEntity<?> handlingNoElementException(Throwable e) {
+
+        log.error("{}\n{}", e.getMessage(), Arrays.toString(e.getStackTrace()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
 }

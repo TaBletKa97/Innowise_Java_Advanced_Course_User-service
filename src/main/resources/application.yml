@@ -3,9 +3,18 @@ spring:
     name: Innowise_Java_Advanced_Course_User-service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DB_URL:placeholder}
-    username: ${DB_USERNAME:placeholder}
-    password: ${DB_PASSWORD:placeholder}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+  config:
+    import: "optional:file:.env[.properties]"
+
+  cache:
+    type: redis
 
   liquibase:
     change-log: db/changelog/main-changelog.xml
