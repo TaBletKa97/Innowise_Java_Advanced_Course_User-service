@@ -55,3 +55,11 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+sonar {
+    properties {
+        property "sonar.projectKey", "TaBletKa97_Innowise_Java_Advanced_Course_User-service"
+        property "sonar.organization", "tabletka97" //
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}

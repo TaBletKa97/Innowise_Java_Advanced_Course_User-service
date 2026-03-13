@@ -21,7 +21,7 @@ jobs:
       - name: Analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar -Dsonar.projectKey=TaBletKa97_Innowise_Java_Advanced_Course_User-service -Dsonar.organization=tabletka97
+        run: ./gradlew sonar --info
 
 
   artefact-creation:
