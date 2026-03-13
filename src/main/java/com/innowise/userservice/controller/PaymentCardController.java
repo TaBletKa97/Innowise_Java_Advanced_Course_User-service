@@ -1,11 +1,15 @@
 package com.innowise.userservice.controller;
 
+import org.springframework.web.bind.annotation.*;
+
 import com.innowise.userservice.service.CardServiceImpl;
 import com.innowise.userservice.service.DTO.CardRequestDTO;
+import com.innowise.userservice.service.DTO.CardResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cards")
@@ -15,17 +19,17 @@ public class PaymentCardController {
     private final CardServiceImpl cardService;
 
     @GetMapping
-    public ResponseEntity<?> getAllCards() {
+    public ResponseEntity<List<CardResponseDTO>> getAllCards() {
         return ResponseEntity.ok(cardService.readAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCardById(@PathVariable("id") Long id) {
+    public ResponseEntity<CardResponseDTO> getCardById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cardService.readById(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> createCard(
+    public ResponseEntity<CardResponseDTO> createCard(
             @RequestBody CardRequestDTO request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -33,7 +37,7 @@ public class PaymentCardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCard(
+    public ResponseEntity<CardResponseDTO> updateCard(
             @RequestBody CardRequestDTO request,
             @PathVariable("id") Long id
     ) {
@@ -42,18 +46,18 @@ public class PaymentCardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCard(@PathVariable("id") Long id) {
+    public ResponseEntity<Boolean> deleteCard(@PathVariable("id") Long id) {
         cardService.deleteById(id);
         return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{id}/activate")
-    public ResponseEntity<?> activateCard(@PathVariable("id") Long id) {
+    public ResponseEntity<CardResponseDTO> activateCard(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cardService.activateCard(id));
     }
 
     @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<?> deactivateCard(@PathVariable("id") Long id) {
+    public ResponseEntity<CardResponseDTO> deactivateCard(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cardService.deactivateCard(id));
     }
 }

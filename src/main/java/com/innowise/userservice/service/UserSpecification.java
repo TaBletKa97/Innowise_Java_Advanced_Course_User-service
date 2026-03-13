@@ -5,6 +5,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification {
 
+    private UserSpecification() {
+    }
+
     public static Specification<User> containsName(String providedName) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),

@@ -17,8 +17,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.innowise.userservice.utils.TestsConstants.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @EnableJpaAuditing

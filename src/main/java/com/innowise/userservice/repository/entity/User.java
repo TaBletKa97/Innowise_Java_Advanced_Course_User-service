@@ -1,8 +1,9 @@
 package com.innowise.userservice.repository.entity;
 
-import com.innowise.userservice.repository.interfaces.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import com.innowise.userservice.repository.interfaces.BaseEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

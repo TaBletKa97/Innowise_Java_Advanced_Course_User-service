@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CommonExceptionHandler {
@@ -21,33 +22,38 @@ public class CommonExceptionHandler {
             Name or surname should contain from 2 to 50 characters.
             Email should be real.
             Card number should be real.""";
+
     private static final Logger log = LoggerFactory.getLogger(CommonExceptionHandler.class);
 
     @ExceptionHandler
-    public ResponseEntity<?> handlingGeneralException(Throwable e) {
-        log.error("{}\n{}", e.getMessage(), Arrays.toString(e.getStackTrace()));
+    public ResponseEntity<String> handlingGeneralException(Throwable e) {
+        logError(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 
     @ExceptionHandler(exception = {ActivationException.class, DeactivationException.class,
             IllegalArgumentException.class})
-    public ResponseEntity<?> handlingIllegalArgumentException(Throwable e) {
-
-        log.error("{}\n{}", e.getMessage(), Arrays.toString(e.getStackTrace()));
+    public ResponseEntity<String> handlingIllegalArgumentException(Throwable e) {
+        logError(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(exception = MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handlingValidationException(Throwable e) {
-
-        log.error("{}\n{}", e.getMessage(), Arrays.toString(e.getStackTrace()));
+    public ResponseEntity<String> handlingValidationException(Throwable e) {
+        logError(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(VALIDATION_PARAMS);
     }
 
     @ExceptionHandler(exception = NoSuchElementException.class)
-    public ResponseEntity<?> handlingNoElementException(Throwable e) {
-
-        log.error("{}\n{}", e.getMessage(), Arrays.toString(e.getStackTrace()));
+    public ResponseEntity<String> handlingNoElementException(Throwable e) {
+        logError(e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    private static void logError(Throwable e) {
+        String stacktrace = Arrays.stream(e.getStackTrace())
+                .map(String::valueOf)
+                .collect(Collectors.joining());
+        log.error("{}\n{}", e.getMessage(), stacktrace);
     }
 }

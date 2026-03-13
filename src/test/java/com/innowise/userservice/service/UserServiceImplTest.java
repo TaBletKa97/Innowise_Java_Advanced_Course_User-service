@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.innowise.userservice.utils.TestsConstants.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql(scripts = "/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class UserServiceImplTest extends BaseTest {
@@ -92,16 +93,16 @@ class UserServiceImplTest extends BaseTest {
                 LocalDate.now(), 1 + EMAIL_JON, true);
         UserRequestDTO jonSnow3Request = new UserRequestDTO(null, NAME_JON, SNOW,
                 LocalDate.now(), 2 + EMAIL_JON, true);
-        UserRequestDTO StarkRequest = new UserRequestDTO(null, NAME_NED, STARK,
+        UserRequestDTO starkRequest = new UserRequestDTO(null, NAME_NED, STARK,
                 LocalDate.now(), 3 + EMAIL_JON, true);
 
         userService.create(jonSnow1Request);
         userService.create(jonSnow2Request);
         userService.create(jonSnow3Request);
-        userService.create(StarkRequest);
+        userService.create(starkRequest);
 
         Page<UserResponseDTO> jonSnowPages = userService.readAll(jonSnow1Request, PageRequest.of(0, 2));
-        Page<UserResponseDTO> starkPages = userService.readAll(StarkRequest, PageRequest.of(0, 2));
+        Page<UserResponseDTO> starkPages = userService.readAll(starkRequest, PageRequest.of(0, 2));
 
         assertEquals(3, jonSnowPages.getTotalElements());
         assertEquals(2, jonSnowPages.getTotalPages());
