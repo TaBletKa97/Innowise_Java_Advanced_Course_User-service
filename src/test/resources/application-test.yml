@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: test
   liquibase:
     change-log: db/changelog/main-changelog.xml
   cache:

@@ -3,9 +3,9 @@ spring:
     name: Innowise_Java_Advanced_Course_User-service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: ${SPRING_POSTGRES_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${SPRING_POSTGRES_USERNAME:postgres}
+    password: ${SPRING_POSTGRES_PASSWORD:postgres}
   data:
     redis:
       host: ${SPRING_REDIS_HOST:localhost}
