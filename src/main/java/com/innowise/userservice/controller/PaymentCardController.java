@@ -2,6 +2,7 @@ package com.innowise.userservice.controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.validation.annotation.Validated;
 import com.innowise.userservice.service.CardServiceImpl;
 import com.innowise.userservice.service.DTO.CardRequestDTO;
 import com.innowise.userservice.service.DTO.CardResponseDTO;
@@ -30,7 +31,7 @@ public class PaymentCardController {
 
     @PostMapping
     public ResponseEntity<CardResponseDTO> createCard(
-            @RequestBody CardRequestDTO request
+            @RequestBody @Validated CardRequestDTO request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cardService.create(request));
@@ -38,7 +39,7 @@ public class PaymentCardController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CardResponseDTO> updateCard(
-            @RequestBody CardRequestDTO request,
+            @RequestBody @Validated CardRequestDTO request,
             @PathVariable("id") Long id
     ) {
         return ResponseEntity.status(HttpStatus.OK)

@@ -1,5 +1,6 @@
 package com.innowise.userservice.service;
 
+import com.innowise.userservice.repository.exceptions.DeactivationException;
 import com.innowise.userservice.service.DTO.UserRequestDTO;
 import com.innowise.userservice.service.DTO.UserResponseDTO;
 import com.innowise.userservice.utils.BaseTest;
@@ -11,7 +12,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static com.innowise.userservice.utils.TestsConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,7 +71,7 @@ class UserServiceImplTest extends BaseTest {
     @Test
     void deleteById() {
         userService.deleteById(1L);
-        assertThrows(NoSuchElementException.class, () -> userService.readById(1L));
+        assertThrows(DeactivationException.class, () -> userService.deleteById(1L));
     }
 
     @Test

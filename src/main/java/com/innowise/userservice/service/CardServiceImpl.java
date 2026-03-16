@@ -9,10 +9,9 @@ import com.innowise.userservice.service.DTO.CardResponseDTO;
 import com.innowise.userservice.service.exceptions.CardLimitViolationException;
 import com.innowise.userservice.service.interfaces.CardService;
 import com.innowise.userservice.service.interfaces.mappers.CardMapper;
-import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,13 +20,20 @@ import java.util.Objects;
 import static com.innowise.userservice.service.utils.ServiceConstants.*;
 
 @Service
-@AllArgsConstructor
 @Transactional(readOnly = true)
 public class CardServiceImpl implements CardService<CardResponseDTO, CardRequestDTO, Long> {
 
+    private final CardServiceImpl self;
     private final PaymentCardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardMapper mapper;
+
+    public CardServiceImpl(@Lazy CardServiceImpl self, PaymentCardRepository cardRepository, UserRepository userRepository, CardMapper mapper) {
+        this.self = self;
+        this.cardRepository = cardRepository;
+        this.userRepository = userRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public List<CardResponseDTO> readAll() {
@@ -42,8 +48,8 @@ public class CardServiceImpl implements CardService<CardResponseDTO, CardRequest
 
     @Override
     @Transactional
-    public CardResponseDTO create(@Validated CardRequestDTO createRequest) {
-        User user = userRepository.findById(createRequest.userId())
+    public CardResponseDTO create(CardRequestDTO createRequest) {
+        User user = userRepository.findByIdWithLock(createRequest.userId())
                 .orElseThrow(() -> new NoSuchElementException(NO_USER_ERROR_MESSAGE
                         + createRequest.userId()));
         if (user.getCards().size() >= 5) {
@@ -58,7 +64,7 @@ public class CardServiceImpl implements CardService<CardResponseDTO, CardRequest
 
     @Override
     @Transactional
-    public CardResponseDTO update(Long id, @Validated CardRequestDTO updateRequest) {
+    public CardResponseDTO update(Long id, CardRequestDTO updateRequest) {
         if (!Objects.equals(id, updateRequest.id())) {
             throw new IllegalArgumentException(
                     String.format("Path ID (%d) and Request ID (%d) must match",
@@ -77,10 +83,7 @@ public class CardServiceImpl implements CardService<CardResponseDTO, CardRequest
     @Override
     @Transactional
     public void deleteById(Long id) {
-        if (!cardRepository.existsById(id)) {
-            throw new NoSuchElementException(NO_CARD_ERROR_MESSAGE + id);
-        }
-        cardRepository.deleteById(id);
+        self.deactivateCard(id);
     }
 
     @Override

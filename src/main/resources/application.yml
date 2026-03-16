@@ -20,5 +20,4 @@ spring:
     change-log: db/changelog/main-changelog.xml
 
   jpa:
-    show-sql: false
     open-in-view: false

@@ -12,7 +12,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static com.innowise.userservice.utils.TestsConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,14 +75,14 @@ class CardServiceImplTest extends BaseTest {
         assertTrue(update.updatedAt().isAfter(oldData.updatedAt()));
         assertNotEquals(oldData.expirationDate(), update.expirationDate());
 
-        assertThrows(UnsupportedOperationException.class, () -> cardService.update(1L, new CardRequestDTO(1L, 2L,
-                null, null, null, false)));
+        CardRequestDTO cardRequest = new CardRequestDTO(1L, 2L, null, null, null, false);
+        assertThrows(UnsupportedOperationException.class, () -> cardService.update(1L, cardRequest));
     }
 
     @Test
     void deleteById() {
         cardService.deleteById(1L);
-        assertThrows(NoSuchElementException.class, () -> cardService.deleteById(1L));
+        assertThrows(DeactivationException.class, () -> cardService.deleteById(1L));
     }
 
     @Test

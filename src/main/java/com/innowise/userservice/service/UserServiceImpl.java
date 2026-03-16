@@ -6,8 +6,8 @@ import com.innowise.userservice.service.DTO.UserRequestDTO;
 import com.innowise.userservice.service.DTO.UserResponseDTO;
 import com.innowise.userservice.service.interfaces.UserService;
 import com.innowise.userservice.service.interfaces.mappers.UserMapper;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -23,13 +23,19 @@ import java.util.Objects;
 import static com.innowise.userservice.service.utils.ServiceConstants.NO_USER_ERROR_MESSAGE;
 
 @Service
-@AllArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService<UserResponseDTO,
         UserRequestDTO, Long> {
 
+    private final UserServiceImpl self;
     private final UserRepository repository;
     private final UserMapper mapper;
 
+    public UserServiceImpl(@Lazy UserServiceImpl self, UserRepository repository, UserMapper mapper) {
+        this.self = self;
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     @Override
     @Cacheable(value = "user_list")
@@ -45,6 +51,7 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
     }
 
     @Override
+    @Transactional
     @CacheEvict(value = "user_list", allEntries = true)
     public UserResponseDTO create(UserRequestDTO createRequest) {
         User user = mapper.userDtoToUser(createRequest);
@@ -78,10 +85,7 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
             @CacheEvict(value = "user_list", allEntries = true)
     })
     public void deleteById(Long id) {
-        if (!repository.existsById(id)) {
-            throw new NoSuchElementException("There is no user with id " + id);
-        }
-        repository.deleteById(id);
+        self.deactivateUser(id);
     }
 
     @Override
