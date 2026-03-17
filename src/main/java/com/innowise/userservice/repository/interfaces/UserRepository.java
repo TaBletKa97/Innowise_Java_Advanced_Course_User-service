@@ -45,6 +45,7 @@ public interface UserRepository extends JpaRepository<User, Long>,
             throw new DeactivationException();
         }
         user.setActive(false);
+        user.getCards().forEach(c -> c.setActive(false));
         return user;
     }
 }

@@ -9,14 +9,26 @@ public class UserSpecification {
     }
 
     public static Specification<User> containsName(String providedName) {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
-                        "%" + providedName.toLowerCase() + "%");
+        return (root, query, criteriaBuilder) -> {
+            if (providedName == null || providedName.isEmpty()) return null;
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
+                    "%" + providedName.toLowerCase() + "%");
+        };
     }
 
     public static Specification<User> containsSurname(String providedSurname) {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("surname")),
-                        "%" + providedSurname.toLowerCase() + "%");
+        return (root, query, criteriaBuilder) -> {
+            if (providedSurname == null || providedSurname.isEmpty()) return null;
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("surname")),
+                    "%" + providedSurname.toLowerCase() + "%");
+        };
+    }
+
+    public static Specification<User> hasEmail(String providedEmail) {
+        return (root, query, criteriaBuilder) -> {
+            if (providedEmail == null || providedEmail.isEmpty()) return null;
+            return criteriaBuilder.equal(criteriaBuilder.lower(root.get("email")),
+                    providedEmail.toLowerCase());
+        };
     }
 }

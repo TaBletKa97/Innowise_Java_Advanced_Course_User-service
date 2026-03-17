@@ -113,14 +113,9 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
                                          Pageable pageable) {
         Specification<User> spec = Specification.where(
                 (r, q, cb) -> null);
-
-        if (request.name() != null && !request.name().isEmpty()) {
-            spec = spec.and(UserSpecification.containsName(request.name()));
-        }
-
-        if (request.surname() != null && !request.surname().isEmpty()) {
-            spec = spec.and(UserSpecification.containsSurname(request.surname()));
-        }
+        spec = spec.and(UserSpecification.containsName(request.name()));
+        spec = spec.and(UserSpecification.containsSurname(request.surname()));
+        spec = spec.and(UserSpecification.hasEmail(request.email()));
 
         return this.repository.findAll(spec, pageable).map(mapper::userToUserDto);
     }

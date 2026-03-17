@@ -87,6 +87,8 @@ class UserServiceImplTest extends BaseTest {
 
     @Test
     void testReadAll() {
+        UserRequestDTO jonSnowWithoutEmailRequest = new UserRequestDTO(null, NAME_JON, SNOW,
+                LocalDate.now(), null, true);
         UserRequestDTO jonSnow1Request = new UserRequestDTO(null, NAME_JON, SNOW,
                 LocalDate.now(), EMAIL_JON, true);
         UserRequestDTO jonSnow2Request = new UserRequestDTO(null, NAME_JON, SNOW,
@@ -101,7 +103,7 @@ class UserServiceImplTest extends BaseTest {
         userService.create(jonSnow3Request);
         userService.create(starkRequest);
 
-        Page<UserResponseDTO> jonSnowPages = userService.readAll(jonSnow1Request, PageRequest.of(0, 2));
+        Page<UserResponseDTO> jonSnowPages = userService.readAll(jonSnowWithoutEmailRequest, PageRequest.of(0, 2));
         Page<UserResponseDTO> starkPages = userService.readAll(starkRequest, PageRequest.of(0, 2));
 
         assertEquals(3, jonSnowPages.getTotalElements());

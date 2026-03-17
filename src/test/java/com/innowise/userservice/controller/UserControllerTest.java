@@ -102,7 +102,7 @@ class UserControllerTest extends BaseTest {
     }
 
     @Test
-    void findUsersByCriteria() throws Exception {
+    void findUsersByCriteriaTest() throws Exception {
         UserRequestDTO request = new UserRequestDTO(null, null,
                 "Sidorov", null, null, null);
 
@@ -117,6 +117,25 @@ class UserControllerTest extends BaseTest {
                 .andExpect(jsonPath("$.content[0].surname").value("Sidorov"))
                 .andExpect(jsonPath("$.totalElements").exists())
                 .andExpect(jsonPath("$.size").value(2));
+    }
+
+    @Test
+    void findUsersByEmailTest() throws Exception {
+        final String EXPECTED_EMAIL = "elena@example.com";
+        UserRequestDTO request = new UserRequestDTO(null, null,
+                null, null, EXPECTED_EMAIL, null);
+
+        mockMvc.perform(post("/users/search")
+                        .param("page", "0")
+                        .param("size", "3")
+                        .param("sort", "id")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content[0].email").value(EXPECTED_EMAIL))
+                .andExpect(jsonPath("$.totalElements").exists())
+                .andExpect(jsonPath("$.size").value(3));
     }
 
     @Test
