@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id "org.sonarqube" version "7.1.0.6387"
+    id 'jacoco'
 }
 
 group = 'com.innowise'
@@ -61,5 +62,12 @@ sonar {
         property "sonar.projectKey", "TaBletKa97_Innowise_Java_Advanced_Course_User-service"
         property "sonar.organization", "tabletka97" //
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
     }
 }

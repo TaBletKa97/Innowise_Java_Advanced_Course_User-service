@@ -25,5 +25,6 @@ public interface UserMapper {
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "cards", ignore = true)
     void updateFromDto(UserRequestDTO request, @MappingTarget User target);
 }
