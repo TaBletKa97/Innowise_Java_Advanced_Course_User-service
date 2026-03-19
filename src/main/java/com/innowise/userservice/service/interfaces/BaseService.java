@@ -2,15 +2,15 @@ package com.innowise.userservice.service.interfaces;
 
 import java.util.List;
 
-public interface BaseService<RES, REQ, ID> {
+public interface BaseService<S, Q, I> {
 
-    List<RES> readAll();
+    List<S> readAll();
 
-    RES readById(ID id);
+    S readById(I id);
 
-    RES create(REQ createRequest);
+    S create(Q createRequest);
 
-    RES update(ID id, REQ updateRequest);
+    S update(I id, Q updateRequest);
 
-    void deleteById(ID id);
+    void deleteById(I id);
 }

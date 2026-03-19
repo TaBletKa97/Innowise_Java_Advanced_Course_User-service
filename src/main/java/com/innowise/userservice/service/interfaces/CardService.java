@@ -2,11 +2,11 @@ package com.innowise.userservice.service.interfaces;
 
 import java.util.List;
 
-public interface CardService<RES, REQ, ID> extends BaseService<RES, REQ, ID> {
+public interface CardService<S, Q, I> extends BaseService<S, Q, I> {
 
-    List<RES> readAllCardsByUserId(ID id);
+    List<S> readAllCardsByUserId(I id);
 
-    RES activateCard(ID id);
+    S activateCard(I id);
 
-    RES deactivateCard(ID id);
+    S deactivateCard(I id);
 }

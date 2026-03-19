@@ -1,6 +1,6 @@
 package com.innowise.userservice.controller;
 
-import com.innowise.userservice.service.DTO.CardRequestDTO;
+import com.innowise.userservice.service.dto.CardRequestDto;
 import com.innowise.userservice.utils.BaseTest;
 import com.innowise.userservice.utils.IT;
 import com.jayway.jsonpath.JsonPath;
@@ -55,7 +55,7 @@ class PaymentCardControllerTest extends BaseTest {
 
     @Test
     void createCard() throws Exception {
-        CardRequestDTO request = new CardRequestDTO(null, 1L,
+        CardRequestDto request = new CardRequestDto(null, 1L,
                 "2569223233334444", "holder",
                 LocalDate.now().plusYears(1), true);
         mockMvc.perform(post("/cards")
@@ -68,7 +68,7 @@ class PaymentCardControllerTest extends BaseTest {
 
     @Test
     void updateCard() throws Exception {
-        CardRequestDTO request = new CardRequestDTO(1L, 1L,
+        CardRequestDto request = new CardRequestDto(1L, 1L,
                 "2569223233334444", null, null, null);
         MvcResult result = mockMvc.perform(put("/cards/1")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -4,11 +4,11 @@ package com.innowise.userservice.service.interfaces;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface UserService<RES, REQ, ID> extends BaseService<RES, REQ, ID> {
+public interface UserService<S, Q, I> extends BaseService<S, Q, I> {
 
-    Page<RES> readAll(REQ requestedNameAndSurname, Pageable pageable);
+    Page<S> readAll(Q requestedNameAndSurname, Pageable pageable);
 
-    RES activateUser(ID id);
+    S activateUser(I id);
 
-    RES deactivateUser(ID id);
+    S deactivateUser(I id);
 }

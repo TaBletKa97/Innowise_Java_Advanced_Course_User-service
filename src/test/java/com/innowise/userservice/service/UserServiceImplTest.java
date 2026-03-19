@@ -1,8 +1,8 @@
 package com.innowise.userservice.service;
 
 import com.innowise.userservice.repository.exceptions.DeactivationException;
-import com.innowise.userservice.service.DTO.UserRequestDTO;
-import com.innowise.userservice.service.DTO.UserResponseDTO;
+import com.innowise.userservice.service.dto.UserRequestDto;
+import com.innowise.userservice.service.dto.UserResponseDto;
 import com.innowise.userservice.utils.BaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +33,20 @@ class UserServiceImplTest extends BaseTest {
 
     @Test
     void readAll() {
-        List<UserResponseDTO> userResponseDTOS = userService.readAll();
-        userResponseDTOS.forEach(System.out::println);
-        assertThat(userResponseDTOS).hasSize(10);
+        List<UserResponseDto> userResponseDtos = userService.readAll();
+        userResponseDtos.forEach(System.out::println);
+        assertThat(userResponseDtos).hasSize(10);
     }
 
     @Test
     void readById() {
-        UserResponseDTO user = userService.readById(5L);
+        UserResponseDto user = userService.readById(5L);
         assertEquals(5, user.id());
     }
 
     @Test
     void create() {
-        UserResponseDTO result = userService.create(new UserRequestDTO(null,
+        UserResponseDto result = userService.create(new UserRequestDto(null,
                 NAME_JON, SNOW, LocalDate.now(),
                 EMAIL_JON, true));
         assertEquals(11, result.id());
@@ -58,7 +58,7 @@ class UserServiceImplTest extends BaseTest {
 
     @Test
     void update() {
-        UserResponseDTO result = userService.update(5L, new UserRequestDTO(5L,
+        UserResponseDto result = userService.update(5L, new UserRequestDto(5L,
                 NAME_JON, null, null,
                 EMAIL_JON, true));
         assertEquals(5, result.id());
@@ -76,7 +76,7 @@ class UserServiceImplTest extends BaseTest {
 
     @Test
     void activateUser() {
-        UserResponseDTO userResponseDTO = userService.activateUser(9L);
+        UserResponseDto userResponseDTO = userService.activateUser(9L);
         assertTrue(userResponseDTO.active());
     }
 
@@ -87,15 +87,15 @@ class UserServiceImplTest extends BaseTest {
 
     @Test
     void testReadAll() {
-        UserRequestDTO jonSnowWithoutEmailRequest = new UserRequestDTO(null, NAME_JON, SNOW,
+        UserRequestDto jonSnowWithoutEmailRequest = new UserRequestDto(null, NAME_JON, SNOW,
                 LocalDate.now(), null, true);
-        UserRequestDTO jonSnow1Request = new UserRequestDTO(null, NAME_JON, SNOW,
+        UserRequestDto jonSnow1Request = new UserRequestDto(null, NAME_JON, SNOW,
                 LocalDate.now(), EMAIL_JON, true);
-        UserRequestDTO jonSnow2Request = new UserRequestDTO(null, NAME_JON, SNOW,
+        UserRequestDto jonSnow2Request = new UserRequestDto(null, NAME_JON, SNOW,
                 LocalDate.now(), 1 + EMAIL_JON, true);
-        UserRequestDTO jonSnow3Request = new UserRequestDTO(null, NAME_JON, SNOW,
+        UserRequestDto jonSnow3Request = new UserRequestDto(null, NAME_JON, SNOW,
                 LocalDate.now(), 2 + EMAIL_JON, true);
-        UserRequestDTO starkRequest = new UserRequestDTO(null, NAME_NED, STARK,
+        UserRequestDto starkRequest = new UserRequestDto(null, NAME_NED, STARK,
                 LocalDate.now(), 3 + EMAIL_JON, true);
 
         userService.create(jonSnow1Request);
@@ -103,8 +103,8 @@ class UserServiceImplTest extends BaseTest {
         userService.create(jonSnow3Request);
         userService.create(starkRequest);
 
-        Page<UserResponseDTO> jonSnowPages = userService.readAll(jonSnowWithoutEmailRequest, PageRequest.of(0, 2));
-        Page<UserResponseDTO> starkPages = userService.readAll(starkRequest, PageRequest.of(0, 2));
+        Page<UserResponseDto> jonSnowPages = userService.readAll(jonSnowWithoutEmailRequest, PageRequest.of(0, 2));
+        Page<UserResponseDto> starkPages = userService.readAll(starkRequest, PageRequest.of(0, 2));
 
         assertEquals(3, jonSnowPages.getTotalElements());
         assertEquals(2, jonSnowPages.getTotalPages());

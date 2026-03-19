@@ -1,6 +1,6 @@
 package com.innowise.userservice.controller;
 
-import com.innowise.userservice.service.DTO.UserRequestDTO;
+import com.innowise.userservice.service.dto.UserRequestDto;
 import com.innowise.userservice.utils.BaseTest;
 import com.innowise.userservice.utils.IT;
 import com.jayway.jsonpath.JsonPath;
@@ -54,7 +54,7 @@ class UserControllerTest extends BaseTest {
 
     @Test
     void createUser() throws Exception {
-        UserRequestDTO request = new UserRequestDTO(null, "SomeName",
+        UserRequestDto request = new UserRequestDto(null, "SomeName",
                 "SomeSurname", LocalDate.now(), "test@test.com", true);
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ class UserControllerTest extends BaseTest {
 
     @Test
     void updateUser() throws Exception {
-        UserRequestDTO request = new UserRequestDTO(1L, null,
+        UserRequestDto request = new UserRequestDto(1L, null,
                 "SomeSurname", null, null, null);
         MvcResult result = mockMvc.perform(put("/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -103,7 +103,7 @@ class UserControllerTest extends BaseTest {
 
     @Test
     void findUsersByCriteriaTest() throws Exception {
-        UserRequestDTO request = new UserRequestDTO(null, null,
+        UserRequestDto request = new UserRequestDto(null, null,
                 "Sidorov", null, null, null);
 
         mockMvc.perform(post("/users/search")
@@ -122,7 +122,7 @@ class UserControllerTest extends BaseTest {
     @Test
     void findUsersByEmailTest() throws Exception {
         final String EXPECTED_EMAIL = "elena@example.com";
-        UserRequestDTO request = new UserRequestDTO(null, null,
+        UserRequestDto request = new UserRequestDto(null, null,
                 null, null, EXPECTED_EMAIL, null);
 
         mockMvc.perform(post("/users/search")

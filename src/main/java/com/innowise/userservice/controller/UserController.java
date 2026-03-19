@@ -1,10 +1,10 @@
 package com.innowise.userservice.controller;
 
+import com.innowise.userservice.service.dto.UserRequestDto;
+import com.innowise.userservice.service.dto.UserResponseDto;
 import org.springframework.web.bind.annotation.*;
 
-import com.innowise.userservice.service.DTO.CardResponseDTO;
-import com.innowise.userservice.service.DTO.UserRequestDTO;
-import com.innowise.userservice.service.DTO.UserResponseDTO;
+import com.innowise.userservice.service.dto.CardResponseDto;
 import com.innowise.userservice.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,29 +20,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService<UserResponseDTO, UserRequestDTO, Long> userService;
+    private final UserService<UserResponseDto, UserRequestDto, Long> userService;
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         return ResponseEntity.ok(userService.readAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.readById(id));
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(
-            @RequestBody @Validated UserRequestDTO request
+    public ResponseEntity<UserResponseDto> createUser(
+            @RequestBody @Validated UserRequestDto request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(
-            @RequestBody @Validated UserRequestDTO request,
+    public ResponseEntity<UserResponseDto> updateUser(
+            @RequestBody @Validated UserRequestDto request,
             @PathVariable("id") Long id
     ) {
         return ResponseEntity.status(HttpStatus.OK)
@@ -56,23 +56,23 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/activate")
-    public ResponseEntity<UserResponseDTO> activateUser(@PathVariable("id") Long id) {
+    public ResponseEntity<UserResponseDto> activateUser(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.activateUser(id));
     }
 
     @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<UserResponseDTO> deactivateUser(@PathVariable("id") Long id) {
+    public ResponseEntity<UserResponseDto> deactivateUser(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.deactivateUser(id));
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<UserResponseDTO>> findUsersByCriteria(@RequestBody UserRequestDTO request,
-                                                    Pageable pageable) {
+    public ResponseEntity<Page<UserResponseDto>> findUsersByCriteria(@RequestBody UserRequestDto request,
+                                                                     Pageable pageable) {
         return ResponseEntity.ok().body(userService.readAll(request,pageable));
     }
 
     @GetMapping("/{id}/cards")
-    public ResponseEntity<List<CardResponseDTO>> getAllCardsByUserId(@PathVariable("id") Long id) {
+    public ResponseEntity<List<CardResponseDto>> getAllCardsByUserId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.readById(id).cards());
     }
 }

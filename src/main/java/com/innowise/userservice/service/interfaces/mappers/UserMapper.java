@@ -1,8 +1,8 @@
 package com.innowise.userservice.service.interfaces.mappers;
 
 import com.innowise.userservice.repository.entity.User;
-import com.innowise.userservice.service.DTO.UserRequestDTO;
-import com.innowise.userservice.service.DTO.UserResponseDTO;
+import com.innowise.userservice.service.dto.UserRequestDto;
+import com.innowise.userservice.service.dto.UserResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -14,17 +14,17 @@ import java.util.List;
         NullValuePropertyMappingStrategy.IGNORE, uses = CardMapper.class)
 public interface UserMapper {
 
-    List<UserResponseDTO> userListToDTOList(List<User> userList);
+    List<UserResponseDto> userListToDTOList(List<User> userList);
 
-    UserResponseDTO userToUserDto(User user);
-
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "cards", ignore = true)
-    User userDtoToUser(UserRequestDTO user);
+    UserResponseDto userToUserDto(User user);
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "cards", ignore = true)
-    void updateFromDto(UserRequestDTO request, @MappingTarget User target);
+    User userDtoToUser(UserRequestDto user);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "cards", ignore = true)
+    void updateFromDto(UserRequestDto request, @MappingTarget User target);
 }

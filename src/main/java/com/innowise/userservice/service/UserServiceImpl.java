@@ -2,8 +2,8 @@ package com.innowise.userservice.service;
 
 import com.innowise.userservice.repository.entity.User;
 import com.innowise.userservice.repository.interfaces.UserRepository;
-import com.innowise.userservice.service.DTO.UserRequestDTO;
-import com.innowise.userservice.service.DTO.UserResponseDTO;
+import com.innowise.userservice.service.dto.UserRequestDto;
+import com.innowise.userservice.service.dto.UserResponseDto;
 import com.innowise.userservice.service.interfaces.UserService;
 import com.innowise.userservice.service.interfaces.mappers.UserMapper;
 import org.springframework.context.annotation.Lazy;
@@ -24,8 +24,8 @@ import static com.innowise.userservice.service.utils.ServiceConstants.NO_USER_ER
 
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService<UserResponseDTO,
-        UserRequestDTO, Long> {
+public class UserServiceImpl implements UserService<UserResponseDto,
+        UserRequestDto, Long> {
 
     private final UserServiceImpl self;
     private final UserRepository repository;
@@ -39,13 +39,13 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
 
     @Override
     @Cacheable(value = "user_list")
-    public List<UserResponseDTO> readAll() {
+    public List<UserResponseDto> readAll() {
         return mapper.userListToDTOList(repository.findAll());
     }
 
     @Override
     @Cacheable(value = "user", key = "#id")
-    public UserResponseDTO readById(Long id) {
+    public UserResponseDto readById(Long id) {
         return mapper.userToUserDto(repository.findById(id).orElseThrow(() ->
                 new NoSuchElementException(NO_USER_ERROR_MESSAGE + id)));
     }
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
     @Override
     @Transactional
     @CacheEvict(value = "user_list", allEntries = true)
-    public UserResponseDTO create(UserRequestDTO createRequest) {
+    public UserResponseDto create(UserRequestDto createRequest) {
         User user = mapper.userDtoToUser(createRequest);
         return mapper.userToUserDto(repository.saveAndFlush(user));
     }
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
             @CacheEvict(value = "user", key = "#id"),
             @CacheEvict(value = "user_list", allEntries = true)
     })
-    public UserResponseDTO update(Long id, UserRequestDTO updateRequest) {
+    public UserResponseDto update(Long id, UserRequestDto updateRequest) {
         if (!Objects.equals(id, updateRequest.id())) {
             throw new IllegalArgumentException(
                     String.format("Path ID (%d) and Request ID (%d) must match",
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
             @CacheEvict(value = "user", key = "#id"),
             @CacheEvict(value = "user_list", allEntries = true)
     })
-    public UserResponseDTO activateUser(Long id) {
+    public UserResponseDto activateUser(Long id) {
         return mapper.userToUserDto(repository.activateUser(id));
     }
 
@@ -104,12 +104,12 @@ public class UserServiceImpl implements UserService<UserResponseDTO,
             @CacheEvict(value = "user", key = "#id"),
             @CacheEvict(value = "user_list", allEntries = true)
     })
-    public UserResponseDTO deactivateUser(Long id) {
+    public UserResponseDto deactivateUser(Long id) {
         return mapper.userToUserDto(repository.deactivateUser(id));
     }
 
     @Override
-    public Page<UserResponseDTO> readAll(UserRequestDTO request,
+    public Page<UserResponseDto> readAll(UserRequestDto request,
                                          Pageable pageable) {
         Specification<User> spec = Specification.where(
                 (r, q, cb) -> null);

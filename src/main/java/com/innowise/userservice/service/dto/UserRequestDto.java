@@ -1,4 +1,4 @@
-package com.innowise.userservice.service.DTO;
+package com.innowise.userservice.service.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Positive;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record UserRequestDTO(
+public record UserRequestDto(
         @Positive
         Long id,
 

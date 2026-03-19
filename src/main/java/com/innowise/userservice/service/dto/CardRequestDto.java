@@ -1,11 +1,11 @@
-package com.innowise.userservice.service.DTO;
+package com.innowise.userservice.service.dto;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
-public record CardRequestDTO(
+public record CardRequestDto(
         @Positive
         Long id,
 

@@ -1,10 +1,10 @@
-package com.innowise.userservice.service.DTO;
+package com.innowise.userservice.service.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record UserResponseDTO(
+public record UserResponseDto(
         Long id,
         String name,
         String surname,
@@ -13,5 +13,5 @@ public record UserResponseDTO(
         boolean active,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        List<CardResponseDTO> cards) {
+        List<CardResponseDto> cards) {
 }

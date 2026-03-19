@@ -1,9 +1,9 @@
-package com.innowise.userservice.service.DTO;
+package com.innowise.userservice.service.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record CardResponseDTO(
+public record CardResponseDto(
         Long id,
         Long userId,
         String number,
