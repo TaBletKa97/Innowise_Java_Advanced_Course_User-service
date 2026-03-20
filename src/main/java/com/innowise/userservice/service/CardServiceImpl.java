@@ -61,8 +61,13 @@ public class CardServiceImpl implements CardService<CardResponseDto, CardRequest
         User user = userRepository.findByIdWithLock(createRequest.userId())
                 .orElseThrow(() -> new NoSuchElementException(NO_USER_ERROR_MESSAGE
                         + createRequest.userId()));
+
         if (user.getCards().stream().filter(PaymentCard::isActive).count() >= 5) {
             throw new CardLimitViolationException();
+        }
+
+        if (createRequest.holder() == null || createRequest.holder().isEmpty() || createRequest.holder().isBlank()) {
+            throw new IllegalArgumentException(CARD_OWNER_ABSENCE_MESSAGE);
         }
 
         PaymentCard card = mapper.cardDtoToCard(createRequest);
@@ -103,7 +108,6 @@ public class CardServiceImpl implements CardService<CardResponseDto, CardRequest
     }
 
     @Override
-    @Transactional
     public List<CardResponseDto> readAllCardsByUserId(Long userId) {
         return mapper.cardsListToDtoList(
                 cardRepository.findPaymentCardsByUserId(userId));

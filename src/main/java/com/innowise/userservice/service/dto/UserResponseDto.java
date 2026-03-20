@@ -1,5 +1,6 @@
 package com.innowise.userservice.service.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,5 +14,6 @@ public record UserResponseDto(
         boolean active,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        List<CardResponseDto> cards) {
+        List<CardResponseDto> cards
+) implements Serializable {
 }

@@ -139,6 +139,17 @@ class CardServiceImplUnitTest {
     }
 
     @Test
+    void createThrowsIllegalArgumentException() {
+        CardRequestDto createRequest = new CardRequestDto(2L, 4L,
+                CARD_NUMBER2, null, LocalDate.now(), true);
+
+        when(userRepository.findByIdWithLock(4L)).thenReturn(Optional.of(user));
+
+        assertThrows(IllegalArgumentException.class, () ->
+                cardService.create(createRequest));
+    }
+
+    @Test
     void update() {
         CardRequestDto updateRequest = new CardRequestDto(2L, 4L,
                 null, null, null, true);

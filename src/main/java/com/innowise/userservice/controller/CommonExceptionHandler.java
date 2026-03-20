@@ -33,7 +33,8 @@ public class CommonExceptionHandler {
     }
 
     @ExceptionHandler(exception = {ActivationException.class, DeactivationException.class,
-            IllegalArgumentException.class, CardLimitViolationException.class})
+            IllegalArgumentException.class, CardLimitViolationException.class,
+            UnsupportedOperationException.class})
     public ResponseEntity<String> handlingIllegalArgumentException(Throwable e) {
         logError(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -54,7 +55,7 @@ public class CommonExceptionHandler {
     private static void logError(Throwable e) {
         String stacktrace = Arrays.stream(e.getStackTrace())
                 .map(String::valueOf)
-                .collect(Collectors.joining());
-        log.error("{}\n{}", e.getMessage(), stacktrace);
+                .collect(Collectors.joining("\n"));
+        log.error("{}\n{}\n", e.getMessage(), stacktrace);
     }
 }

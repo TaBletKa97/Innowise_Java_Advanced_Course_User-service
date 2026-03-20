@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<UserResponseDto>> findUsersByCriteria(@RequestBody UserRequestDto request,
+    public ResponseEntity<Page<UserResponseDto>> findUsersByCriteria(UserRequestDto request,
                                                                      Pageable pageable) {
         return ResponseEntity.ok().body(userService.readAll(request,pageable));
     }

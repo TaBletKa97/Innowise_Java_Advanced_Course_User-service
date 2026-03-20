@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static com.innowise.userservice.service.utils.ServiceConstants.NO_USER_ERROR_MESSAGE;
+import static com.innowise.userservice.service.utils.ServiceConstants.WRONG_CREDENTIALS_ERROR_MESSAGE;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,6 +56,10 @@ public class UserServiceImpl implements UserService<UserResponseDto,
     @Transactional
     @CacheEvict(value = "user_list", allEntries = true)
     public UserResponseDto create(UserRequestDto createRequest) {
+        if (createRequest.name() == null || createRequest.surname() == null) {
+            throw new IllegalArgumentException(WRONG_CREDENTIALS_ERROR_MESSAGE);
+        }
+
         User user = mapper.userDtoToUser(createRequest);
         return mapper.userToUserDto(repository.saveAndFlush(user));
     }

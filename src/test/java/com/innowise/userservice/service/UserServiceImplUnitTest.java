@@ -103,6 +103,17 @@ class UserServiceImplUnitTest {
     }
 
     @Test
+    void createThrowsIllegalArgumentException() {
+        var userRequestDto1 = new UserRequestDto(1L, null, STARK, null, EMAIL_ARYA, true);
+        var userRequestDto2 = new UserRequestDto(1L, NAME_ARYA, null, null, EMAIL_ARYA, true);
+
+        assertThrows(IllegalArgumentException.class,() -> userService.create(userRequestDto1));
+        assertThrows(IllegalArgumentException.class,() -> userService.create(userRequestDto2));
+
+        verify(repository, never()).saveAndFlush(any());
+    }
+
+    @Test
     void updateTest() {
         when(repository.findById(1L)).thenReturn(Optional.of(user));
         when(repository.saveAndFlush(user)).thenReturn(user);

@@ -103,15 +103,11 @@ class UserControllerTest extends BaseTest {
 
     @Test
     void findUsersByCriteriaTest() throws Exception {
-        UserRequestDto request = new UserRequestDto(null, null,
-                "Sidorov", null, null, null);
-
         mockMvc.perform(get("/users/search")
                         .param("page", "0")
                         .param("size", "2")
                         .param("sort", "id")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(request)))
+                        .param("surname", "Sidorov"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].surname").value("Sidorov"))
@@ -122,15 +118,12 @@ class UserControllerTest extends BaseTest {
     @Test
     void findUsersByEmailTest() throws Exception {
         final String EXPECTED_EMAIL = "elena@example.com";
-        UserRequestDto request = new UserRequestDto(null, null,
-                null, null, EXPECTED_EMAIL, null);
 
         mockMvc.perform(get("/users/search")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "id")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(request)))
+                        .param("email", EXPECTED_EMAIL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].email").value(EXPECTED_EMAIL))
