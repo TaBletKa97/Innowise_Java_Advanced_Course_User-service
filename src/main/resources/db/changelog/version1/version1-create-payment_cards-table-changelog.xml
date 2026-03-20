@@ -14,12 +14,12 @@
                              referencedTableName="users"
                              referencedColumnNames="id"/>
             </column>
-            <column name="number" type="varchar"/>
-            <column name="holder" type="varchar"/>
+            <column name="number" type="varchar(16)"/>
+            <column name="holder" type="varchar(50)"/>
             <column name="expiration_date" type="date"/>
-            <column name="active" type="varchar"/>
-            <column name="createdAt" type="datetime2"/>
-            <column name="updatedAt" type="datetime2"/>
+            <column name="active" type="boolean"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
         </createTable>
     </changeSet>
 
@@ -27,21 +27,9 @@
         <createIndex tableName="payment_cards" indexName="idx_user_id">
             <column name="user_id"/>
         </createIndex>
-        <createIndex tableName="payment_cards" indexName="idx_number" unique="true">
+        <createIndex tableName="payment_cards" indexName="idx_number">
             <column name="number"/>
         </createIndex>
-    </changeSet>
-
-    <changeSet id="renaming_payment_cards_date_columns" author="tabletka97">
-        <renameColumn tableName="payment_cards" oldColumnName="createdAt"
-                      newColumnName="created_at"/>
-        <renameColumn tableName="payment_cards" oldColumnName="updatedAt"
-                      newColumnName="updated_at"/>
-    </changeSet>
-    
-    <changeSet id="payment_cards_active_datatype_change" author="tabletka97">
-        <modifyDataType tableName="payment_cards" columnName="active"
-                        newDataType="boolean"/>
     </changeSet>
 
 </databaseChangeLog>

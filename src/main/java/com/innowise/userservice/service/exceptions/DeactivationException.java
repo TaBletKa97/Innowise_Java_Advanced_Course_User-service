@@ -1,4 +1,4 @@
-package com.innowise.userservice.repository.exceptions;
+package com.innowise.userservice.service.exceptions;
 
 public class DeactivationException extends RuntimeException {
     public static final String DEACTIVATION_ERROR_MESSAGE = "Target instance is already not active";

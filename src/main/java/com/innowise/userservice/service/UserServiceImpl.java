@@ -4,6 +4,8 @@ import com.innowise.userservice.repository.entity.User;
 import com.innowise.userservice.repository.interfaces.UserRepository;
 import com.innowise.userservice.service.dto.UserRequestDto;
 import com.innowise.userservice.service.dto.UserResponseDto;
+import com.innowise.userservice.service.exceptions.ActivationException;
+import com.innowise.userservice.service.exceptions.DeactivationException;
 import com.innowise.userservice.service.interfaces.UserService;
 import com.innowise.userservice.service.interfaces.mappers.UserMapper;
 import org.springframework.context.annotation.Lazy;
@@ -46,8 +48,7 @@ public class UserServiceImpl implements UserService<UserResponseDto,
     @Override
     @Cacheable(value = "user", key = "#id")
     public UserResponseDto readById(Long id) {
-        return mapper.userToUserDto(repository.findById(id).orElseThrow(() ->
-                new NoSuchElementException(NO_USER_ERROR_MESSAGE + id)));
+        return mapper.userToUserDto(findUserById(id));
     }
 
     @Override
@@ -70,8 +71,7 @@ public class UserServiceImpl implements UserService<UserResponseDto,
                     String.format("Path ID (%d) and Request ID (%d) must match",
                             id, updateRequest.id()));
         }
-        User targetUser = repository.findById(updateRequest.id()).orElseThrow(() ->
-                new NoSuchElementException(NO_USER_ERROR_MESSAGE + updateRequest.id()));
+        User targetUser = findUserById(id);
 
         mapper.updateFromDto(updateRequest, targetUser);
 
@@ -95,7 +95,12 @@ public class UserServiceImpl implements UserService<UserResponseDto,
             @CacheEvict(value = "user_list", allEntries = true)
     })
     public UserResponseDto activateUser(Long id) {
-        return mapper.userToUserDto(repository.activateUser(id));
+        var user = findUserById(id);
+        if (user.isActive()) {
+            throw new ActivationException();
+        }
+        user.setActive(true);
+        return mapper.userToUserDto(repository.saveAndFlush(user));
     }
 
     @Override
@@ -105,7 +110,12 @@ public class UserServiceImpl implements UserService<UserResponseDto,
             @CacheEvict(value = "user_list", allEntries = true)
     })
     public UserResponseDto deactivateUser(Long id) {
-        return mapper.userToUserDto(repository.deactivateUser(id));
+        var user = findUserById(id);
+        if (!user.isActive()) {
+            throw new DeactivationException();
+        }
+        user.setActive(false);
+        return mapper.userToUserDto(repository.saveAndFlush(user));
     }
 
     @Override
@@ -118,5 +128,10 @@ public class UserServiceImpl implements UserService<UserResponseDto,
         spec = spec.and(UserSpecification.hasEmail(request.email()));
 
         return this.repository.findAll(spec, pageable).map(mapper::userToUserDto);
+    }
+
+    private User findUserById(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new NoSuchElementException(NO_USER_ERROR_MESSAGE + id));
     }
 }

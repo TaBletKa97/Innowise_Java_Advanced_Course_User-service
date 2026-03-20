@@ -1,7 +1,9 @@
 package com.innowise.userservice.controller;
 
+import com.innowise.userservice.service.dto.CardRequestDto;
 import com.innowise.userservice.service.dto.UserRequestDto;
 import com.innowise.userservice.service.dto.UserResponseDto;
+import com.innowise.userservice.service.interfaces.CardService;
 import org.springframework.web.bind.annotation.*;
 
 import com.innowise.userservice.service.dto.CardResponseDto;
@@ -21,6 +23,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService<UserResponseDto, UserRequestDto, Long> userService;
+    private final CardService<CardResponseDto, CardRequestDto, Long> cardService;
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
@@ -50,9 +53,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/activate")
@@ -65,7 +68,7 @@ public class UserController {
         return ResponseEntity.ok(userService.deactivateUser(id));
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public ResponseEntity<Page<UserResponseDto>> findUsersByCriteria(@RequestBody UserRequestDto request,
                                                                      Pageable pageable) {
         return ResponseEntity.ok().body(userService.readAll(request,pageable));
@@ -73,6 +76,6 @@ public class UserController {
 
     @GetMapping("/{id}/cards")
     public ResponseEntity<List<CardResponseDto>> getAllCardsByUserId(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.readById(id).cards());
+        return ResponseEntity.ok(cardService.readAllCardsByUserId(id));
     }
 }

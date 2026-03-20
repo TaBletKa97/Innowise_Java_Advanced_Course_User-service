@@ -86,7 +86,7 @@ class UserControllerTest extends BaseTest {
     @Test
     void deleteUser() throws Exception {
         mockMvc.perform(delete("/users/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -106,7 +106,7 @@ class UserControllerTest extends BaseTest {
         UserRequestDto request = new UserRequestDto(null, null,
                 "Sidorov", null, null, null);
 
-        mockMvc.perform(post("/users/search")
+        mockMvc.perform(get("/users/search")
                         .param("page", "0")
                         .param("size", "2")
                         .param("sort", "id")
@@ -125,7 +125,7 @@ class UserControllerTest extends BaseTest {
         UserRequestDto request = new UserRequestDto(null, null,
                 null, null, EXPECTED_EMAIL, null);
 
-        mockMvc.perform(post("/users/search")
+        mockMvc.perform(get("/users/search")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "id")

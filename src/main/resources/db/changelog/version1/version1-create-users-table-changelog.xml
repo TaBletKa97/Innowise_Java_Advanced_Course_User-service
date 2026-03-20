@@ -15,12 +15,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="birth_date" type="date"/>
-            <column name="email" type="varchar">
+            <column name="email" type="varchar(150)">
                 <constraints nullable="false"/>
             </column>
-            <column name="active" type="varchar"/>
-            <column name="createdAt" type="datetime2"/>
-            <column name="updatedAt" type="datetime2"/>
+            <column name="active" type="boolean"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
         </createTable>
     </changeSet>
 
@@ -28,18 +28,6 @@
         <createIndex tableName="users" indexName="idx_email" unique="true">
             <column name="email"/>
         </createIndex>
-    </changeSet>
-    
-    <changeSet id="renaming_users_date_columns" author="tabletka97">
-        <renameColumn tableName="users" oldColumnName="createdAt"
-                      newColumnName="created_at"/>
-        <renameColumn tableName="users" oldColumnName="updatedAt"
-                      newColumnName="updated_at"/>
-    </changeSet>
-
-    <changeSet id="users_active_datatype_change" author="tabletka97">
-        <modifyDataType tableName="users" columnName="active"
-                        newDataType="boolean"/>
     </changeSet>
 
 </databaseChangeLog>

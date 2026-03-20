@@ -1,7 +1,8 @@
 package com.innowise.userservice.controller;
 
-import com.innowise.userservice.repository.exceptions.ActivationException;
-import com.innowise.userservice.repository.exceptions.DeactivationException;
+import com.innowise.userservice.service.exceptions.ActivationException;
+import com.innowise.userservice.service.exceptions.CardLimitViolationException;
+import com.innowise.userservice.service.exceptions.DeactivationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class CommonExceptionHandler {
     }
 
     @ExceptionHandler(exception = {ActivationException.class, DeactivationException.class,
-            IllegalArgumentException.class})
+            IllegalArgumentException.class, CardLimitViolationException.class})
     public ResponseEntity<String> handlingIllegalArgumentException(Throwable e) {
         logError(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

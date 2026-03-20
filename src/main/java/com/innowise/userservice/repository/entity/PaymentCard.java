@@ -51,16 +51,6 @@ public class PaymentCard implements BaseEntity<Long> {
     private User user;
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (!(o instanceof PaymentCard card)) return false;
         return Objects.equals(id, card.id);

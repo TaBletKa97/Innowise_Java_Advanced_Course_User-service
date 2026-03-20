@@ -88,7 +88,7 @@ class PaymentCardControllerTest extends BaseTest {
     @Test
     void deleteCard() throws Exception {
         mockMvc.perform(delete("/cards/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test

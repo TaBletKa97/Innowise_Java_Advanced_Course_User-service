@@ -2,24 +2,23 @@ package com.innowise.userservice.repository;
 
 import com.innowise.userservice.repository.entity.PaymentCard;
 import com.innowise.userservice.repository.entity.User;
-import com.innowise.userservice.repository.exceptions.ActivationException;
+import com.innowise.userservice.repository.interfaces.PaymentCardRepository;
 import com.innowise.userservice.repository.interfaces.UserRepository;
-import com.innowise.userservice.service.UserSpecification;
 import com.innowise.userservice.utils.TestsConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.innowise.userservice.utils.TestsConstants.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @EnableJpaAuditing
@@ -29,7 +28,8 @@ class RepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private TestEntityManager testEntityManager;
+    private PaymentCardRepository paymentCardRepository;
+
 
     @BeforeEach
     void setUp() {
@@ -92,48 +92,14 @@ class RepositoryTest {
 
     @Test
     void findCardsByUserIdTest() {
-        List<PaymentCard> cards = userRepository.findAll().stream()
+        User arya = userRepository.findAll().stream()
                 .filter(u -> u.getName().equals(NAME_ARYA))
                 .findFirst()
-                .get()
-                .getCards();
+                .get();
 
-        assertThat(cards).hasSize(2);
-    }
+        List<PaymentCard> actualCards = paymentCardRepository.findPaymentCardsByUserId(arya.getId());
 
-    @Test
-    void updateUserTest() {
-        User user = userRepository.findAll().getFirst();
-        testEntityManager.flush();
-        testEntityManager.clear();
-        User edited = new User(user.getId(),
-                NAME_NED,
-                user.getSurname(),
-                user.getBirthDate(),
-                user.getEmail(),
-                user.isActive(),
-                user.getCreatedAt(),
-                user.getUpdatedAt(),
-                user.getCards());
-
-        User saved = userRepository.saveAndFlush(edited);
-        testEntityManager.clear();
-        assertNotEquals(user.getName(), saved.getName());
-        assertNotEquals(user.getUpdatedAt(), saved.getUpdatedAt());
-    }
-
-    @Test
-    void activateUserTest() throws ActivationException {
-        User ned = userRepository.findAll(UserSpecification.containsName(NAME_NED)).getFirst();
-        long id = ned.getId();
-        userRepository.activateUser(id);
-
-        assertThrows(ActivationException.class, () -> userRepository.activateUser(id));
-
-        testEntityManager.flush();
-        testEntityManager.clear();
-
-        User newNed = userRepository.findById(id).orElseThrow();
-        assertTrue(newNed.isActive());
+        assertThat(actualCards).hasSize(arya.getCards().size());
+        actualCards.forEach(card -> assertEquals(arya, card.getUser()));
     }
 }

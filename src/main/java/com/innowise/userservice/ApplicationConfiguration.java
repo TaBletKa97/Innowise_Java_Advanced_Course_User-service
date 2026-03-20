@@ -20,7 +20,7 @@ import static org.springframework.data.redis.serializer.RedisSerializationContex
 @Configuration
 @EnableCaching
 @EnableJpaAuditing
-@Profile(value = {"dev", "prod"})
+@Profile(value = "!test")
 public class ApplicationConfiguration {
 
     @Bean

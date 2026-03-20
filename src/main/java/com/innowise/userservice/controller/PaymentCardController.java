@@ -1,10 +1,10 @@
 package com.innowise.userservice.controller;
 
 import com.innowise.userservice.service.dto.CardResponseDto;
+import com.innowise.userservice.service.interfaces.CardService;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.validation.annotation.Validated;
-import com.innowise.userservice.service.CardServiceImpl;
 import com.innowise.userservice.service.dto.CardRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PaymentCardController {
 
-    private final CardServiceImpl cardService;
+    private final CardService<CardResponseDto, CardRequestDto, Long> cardService;
 
     @GetMapping
     public ResponseEntity<List<CardResponseDto>> getAllCards() {
@@ -47,9 +47,9 @@ public class PaymentCardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCard(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteCard(@PathVariable("id") Long id) {
         cardService.deleteById(id);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/activate")

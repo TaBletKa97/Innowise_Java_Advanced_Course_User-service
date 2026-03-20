@@ -1,7 +1,7 @@
 package com.innowise.userservice.service;
 
-import com.innowise.userservice.repository.exceptions.ActivationException;
-import com.innowise.userservice.repository.exceptions.DeactivationException;
+import com.innowise.userservice.service.exceptions.ActivationException;
+import com.innowise.userservice.service.exceptions.DeactivationException;
 import com.innowise.userservice.service.dto.CardRequestDto;
 import com.innowise.userservice.service.dto.CardResponseDto;
 import com.innowise.userservice.service.exceptions.CardLimitViolationException;
@@ -52,6 +52,7 @@ class CardServiceImplTest extends BaseTest {
         assertNotNull(cardResponseDTO.createdAt());
         assertNotNull(cardResponseDTO.updatedAt());
 
+        cardService.create(createRequest2);
         cardService.create(createRequest2);
 
         assertThrows(CardLimitViolationException.class,  () -> cardService.create(createRequest3));
