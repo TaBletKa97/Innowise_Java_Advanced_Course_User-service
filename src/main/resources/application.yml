@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: Innowise_Java_Advanced_Course_User-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+  profiles:
+    active: docker
+
+
+  cache:
+    type: redis
+
+  liquibase:
+    change-log: db/changelog/main-changelog.xml
+
+  jpa:
+    open-in-view: false

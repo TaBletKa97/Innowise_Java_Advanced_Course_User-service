@@ -1,0 +1,12 @@
+spring:
+  config:
+    activate:
+      on-profile: docker
+    import: "optional:file:.env[.properties]"
+  main:
+    banner-mode: off
+
+
+logging:
+  level:
+    root: fatal
