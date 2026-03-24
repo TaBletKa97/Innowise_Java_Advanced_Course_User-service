@@ -1,4 +1,4 @@
-package com.innowise.userservice.service;
+package com.innowise.userservice.service.implementations;
 
 import com.innowise.userservice.repository.entity.User;
 import com.innowise.userservice.repository.interfaces.UserRepository;
@@ -8,15 +8,16 @@ import com.innowise.userservice.service.exceptions.ActivationException;
 import com.innowise.userservice.service.exceptions.DeactivationException;
 import com.innowise.userservice.service.interfaces.UserService;
 import com.innowise.userservice.service.interfaces.mappers.UserMapper;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.transaction.annotation.Transactional;
+import com.innowise.userservice.service.utils.UserSpecification;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -120,6 +121,7 @@ public class UserServiceImpl implements UserService<UserResponseDto,
             throw new DeactivationException();
         }
         user.setActive(false);
+        user.getCards().forEach(c -> c.setActive(false));
         return mapper.userToUserDto(repository.saveAndFlush(user));
     }
 

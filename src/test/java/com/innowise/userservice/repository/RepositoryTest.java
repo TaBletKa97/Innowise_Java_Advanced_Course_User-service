@@ -55,6 +55,7 @@ class RepositoryTest {
         jonCard.setExpirationDate(LocalDate.now().plusYears(2).minusMonths(3));
         jonCard.setActive(true);
 
+        arya.setId(1L);
         arya.setName(TestsConstants.NAME_ARYA);
         arya.setSurname(STARK);
         arya.setBirthDate(LocalDate.now().minusYears(25));
@@ -63,12 +64,14 @@ class RepositoryTest {
         arya.addCard(aryaCard1);
         arya.addCard(aryaCard2);
 
+        ned.setId(2L);
         ned.setName(NAME_NED);
         ned.setSurname(STARK);
         ned.setBirthDate(LocalDate.now().minusYears(45));
         ned.setEmail(EMAIL_NED);
         ned.setActive(false);
 
+        jon.setId(3L);
         jon.setName(NAME_JON);
         jon.setSurname(SNOW);
         jon.setBirthDate(LocalDate.now().minusYears(45));

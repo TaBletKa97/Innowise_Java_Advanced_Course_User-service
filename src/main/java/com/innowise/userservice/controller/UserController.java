@@ -4,6 +4,7 @@ import com.innowise.userservice.service.dto.CardRequestDto;
 import com.innowise.userservice.service.dto.UserRequestDto;
 import com.innowise.userservice.service.dto.UserResponseDto;
 import com.innowise.userservice.service.interfaces.CardService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.innowise.userservice.service.dto.CardResponseDto;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -31,11 +33,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canAccessUser(#id)")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.readById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canCreateUser(#request)")
     public ResponseEntity<UserResponseDto> createUser(
             @RequestBody @Validated UserRequestDto request
     ) {
@@ -44,6 +48,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canAccessUser(#id)")
     public ResponseEntity<UserResponseDto> updateUser(
             @RequestBody @Validated UserRequestDto request,
             @PathVariable("id") Long id
@@ -64,6 +69,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/deactivate")
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canAccessUser(#id)")
     public ResponseEntity<UserResponseDto> deactivateUser(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.deactivateUser(id));
     }
@@ -75,6 +81,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/cards")
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canAccessUser(#id)")
     public ResponseEntity<List<CardResponseDto>> getAllCardsByUserId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cardService.readAllCardsByUserId(id));
     }

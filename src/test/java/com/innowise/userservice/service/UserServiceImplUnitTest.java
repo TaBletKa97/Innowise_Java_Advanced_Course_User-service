@@ -6,6 +6,7 @@ import com.innowise.userservice.service.dto.UserRequestDto;
 import com.innowise.userservice.service.dto.UserResponseDto;
 import com.innowise.userservice.service.exceptions.ActivationException;
 import com.innowise.userservice.service.exceptions.DeactivationException;
+import com.innowise.userservice.service.implementations.UserServiceImpl;
 import com.innowise.userservice.service.interfaces.mappers.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

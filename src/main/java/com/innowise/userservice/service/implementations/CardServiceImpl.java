@@ -1,4 +1,4 @@
-package com.innowise.userservice.service;
+package com.innowise.userservice.service.implementations;
 
 import com.innowise.userservice.repository.entity.PaymentCard;
 import com.innowise.userservice.repository.entity.User;

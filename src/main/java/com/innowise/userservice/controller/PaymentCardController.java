@@ -2,6 +2,7 @@ package com.innowise.userservice.controller;
 
 import com.innowise.userservice.service.dto.CardResponseDto;
 import com.innowise.userservice.service.interfaces.CardService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cards")
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('ADMIN')")
 public class PaymentCardController {
 
     private final CardService<CardResponseDto, CardRequestDto, Long> cardService;
@@ -25,11 +27,13 @@ public class PaymentCardController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or  @ssi.canAccessCard(#id)")
     public ResponseEntity<CardResponseDto> getCardById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cardService.readById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canCreateCard(#request)")
     public ResponseEntity<CardResponseDto> createCard(
             @RequestBody @Validated CardRequestDto request
     ) {
@@ -37,7 +41,9 @@ public class PaymentCardController {
                 .body(cardService.create(request));
     }
 
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canAccessCard(#id)")
     public ResponseEntity<CardResponseDto> updateCard(
             @RequestBody @Validated CardRequestDto request,
             @PathVariable("id") Long id
@@ -58,6 +64,7 @@ public class PaymentCardController {
     }
 
     @PatchMapping("/{id}/deactivate")
+    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canAccessCard(#id)")
     public ResponseEntity<CardResponseDto> deactivateCard(@PathVariable("id") Long id) {
         return ResponseEntity.ok(cardService.deactivateCard(id));
     }
