@@ -1,6 +1,6 @@
 package com.innowise.userservice.service;
 
-import com.innowise.userservice.service.exceptions.DeactivationException;
+import com.innowise.userservice.exceptions.DeactivationException;
 import com.innowise.userservice.service.dto.UserRequestDto;
 import com.innowise.userservice.service.dto.UserResponseDto;
 import com.innowise.userservice.service.implementations.UserServiceImpl;

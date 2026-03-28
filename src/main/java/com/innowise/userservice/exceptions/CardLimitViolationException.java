@@ -1,4 +1,4 @@
-package com.innowise.userservice.service.exceptions;
+package com.innowise.userservice.exceptions;
 
 public class CardLimitViolationException extends RuntimeException {
 

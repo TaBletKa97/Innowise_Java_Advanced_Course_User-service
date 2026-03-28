@@ -1,8 +1,9 @@
 package com.innowise.userservice.controller.exceptionhandlers;
 
-import com.innowise.userservice.service.exceptions.ActivationException;
-import com.innowise.userservice.service.exceptions.CardLimitViolationException;
-import com.innowise.userservice.service.exceptions.DeactivationException;
+import com.innowise.userservice.exceptions.ActivationException;
+import com.innowise.userservice.exceptions.CardLimitViolationException;
+import com.innowise.userservice.exceptions.DeactivationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.NoSuchElementException;
 
-import static com.innowise.userservice.controller.exceptionhandlers.ExceptionsUtils.logError;
-
+@Slf4j
 @ControllerAdvice
 public class CommonExceptionHandler {
 
@@ -25,7 +25,7 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<String> handlingGeneralException(Throwable e) {
-        logError(this.getClass(), e);
+        log.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 
@@ -33,19 +33,19 @@ public class CommonExceptionHandler {
             IllegalArgumentException.class, CardLimitViolationException.class,
             UnsupportedOperationException.class})
     public ResponseEntity<String> handlingIllegalArgumentException(Throwable e) {
-        logError(this.getClass(), e);
+        log.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(exception = MethodArgumentNotValidException.class)
     public ResponseEntity<String> handlingValidationException(Throwable e) {
-        logError(this.getClass(), e);
+        log.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(VALIDATION_PARAMS);
     }
 
     @ExceptionHandler(exception = NoSuchElementException.class)
     public ResponseEntity<String> handlingNoElementException(Throwable e) {
-        logError(this.getClass(), e);
+        log.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 

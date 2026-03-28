@@ -39,7 +39,6 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN') or @ssi.canCreateUser(#request)")
     public ResponseEntity<UserResponseDto> createUser(
             @RequestBody @Validated UserRequestDto request
     ) {
