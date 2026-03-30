@@ -1,10 +1,11 @@
 package com.innowise.userservice.service;
 
-import com.innowise.userservice.service.exceptions.ActivationException;
-import com.innowise.userservice.service.exceptions.DeactivationException;
+import com.innowise.userservice.exceptions.ActivationException;
+import com.innowise.userservice.exceptions.DeactivationException;
 import com.innowise.userservice.service.dto.CardRequestDto;
 import com.innowise.userservice.service.dto.CardResponseDto;
-import com.innowise.userservice.service.exceptions.CardLimitViolationException;
+import com.innowise.userservice.exceptions.CardLimitViolationException;
+import com.innowise.userservice.service.implementations.CardServiceImpl;
 import com.innowise.userservice.utils.BaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

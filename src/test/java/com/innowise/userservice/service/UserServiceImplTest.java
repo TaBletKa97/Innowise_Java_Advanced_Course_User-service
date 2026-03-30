@@ -1,8 +1,9 @@
 package com.innowise.userservice.service;
 
-import com.innowise.userservice.service.exceptions.DeactivationException;
+import com.innowise.userservice.exceptions.DeactivationException;
 import com.innowise.userservice.service.dto.UserRequestDto;
 import com.innowise.userservice.service.dto.UserResponseDto;
+import com.innowise.userservice.service.implementations.UserServiceImpl;
 import com.innowise.userservice.utils.BaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ class UserServiceImplTest extends BaseTest {
 
     @Test
     void create() {
-        UserResponseDto result = userService.create(new UserRequestDto(null,
+        UserResponseDto result = userService.create(new UserRequestDto(11L,
                 NAME_JON, SNOW, LocalDate.now(),
                 EMAIL_JON, true));
         assertEquals(11, result.id());
@@ -87,15 +88,15 @@ class UserServiceImplTest extends BaseTest {
 
     @Test
     void testReadAll() {
-        UserRequestDto jonSnowWithoutEmailRequest = new UserRequestDto(null, NAME_JON, SNOW,
+        UserRequestDto jonSnowWithoutEmailRequest = new UserRequestDto(100L, NAME_JON, SNOW,
                 LocalDate.now(), null, true);
-        UserRequestDto jonSnow1Request = new UserRequestDto(null, NAME_JON, SNOW,
+        UserRequestDto jonSnow1Request = new UserRequestDto(101L, NAME_JON, SNOW,
                 LocalDate.now(), EMAIL_JON, true);
-        UserRequestDto jonSnow2Request = new UserRequestDto(null, NAME_JON, SNOW,
+        UserRequestDto jonSnow2Request = new UserRequestDto(102L, NAME_JON, SNOW,
                 LocalDate.now(), 1 + EMAIL_JON, true);
-        UserRequestDto jonSnow3Request = new UserRequestDto(null, NAME_JON, SNOW,
+        UserRequestDto jonSnow3Request = new UserRequestDto(103L, NAME_JON, SNOW,
                 LocalDate.now(), 2 + EMAIL_JON, true);
-        UserRequestDto starkRequest = new UserRequestDto(null, NAME_NED, STARK,
+        UserRequestDto starkRequest = new UserRequestDto(104L, NAME_NED, STARK,
                 LocalDate.now(), 3 + EMAIL_JON, true);
 
         userService.create(jonSnow1Request);

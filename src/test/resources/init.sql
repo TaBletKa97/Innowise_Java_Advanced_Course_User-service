@@ -1,18 +1,18 @@
 TRUNCATE TABLE payment_cards RESTART IDENTITY;
 TRUNCATE TABLE users RESTART IDENTITY CASCADE;
 
-INSERT INTO users (name, surname, birth_date, email, active, created_at, updated_at)
+INSERT INTO users (id, name, surname, birth_date, email, active, created_at, updated_at)
 VALUES
-('Ivan', 'Ivanov', '1990-05-15', 'ivan@example.com', true, NOW(), NOW()),
-('Maria', 'Petrova', '1992-08-22', 'maria@example.com', true, NOW(),NOW()),
-('Alexey', 'Sidorov', '1985-12-01', 'alex@example.com', false, NOW(),NOW()),
-('Elena', 'Kuznetsova', '1995-03-10', 'elena@example.com', true, NOW(),NOW()),
-('Dmitry', 'Smirnov', '1988-07-30', 'dmitry@example.com', true, NOW(),NOW()),
-('Olga', 'Popova', '1993-11-25', 'olga@example.com', true, NOW(), NOW()),
-('Sergey', 'Volkov', '1980-01-05', 'sergey@example.com', true, NOW(),NOW()),
-('Anna', 'Sokolova', '1998-09-14', 'anna@example.com', true, NOW(),NOW()),
-('Pavel', 'Sidorov', '1987-04-20', 'pavel@example.com', false, NOW(),NOW()),
-('Natalia', 'Novikova', '1991-06-18', 'natalia@example.com', true, NOW(),NOW());
+(1,'Ivan', 'Ivanov', '1990-05-15', 'ivan@example.com', true, NOW(), NOW()),
+(2,'Maria', 'Petrova', '1992-08-22', 'maria@example.com', true, NOW(),NOW()),
+(3,'Alexey', 'Sidorov', '1985-12-01', 'alex@example.com', false, NOW(),NOW()),
+(4,'Elena', 'Kuznetsova', '1995-03-10', 'elena@example.com', true, NOW(),NOW()),
+(5,'Dmitry', 'Smirnov', '1988-07-30', 'dmitry@example.com', true, NOW(),NOW()),
+(6,'Olga', 'Popova', '1993-11-25', 'olga@example.com', true, NOW(), NOW()),
+(7,'Sergey', 'Volkov', '1980-01-05', 'sergey@example.com', true, NOW(),NOW()),
+(8,'Anna', 'Sokolova', '1998-09-14', 'anna@example.com', true, NOW(),NOW()),
+(9,'Pavel', 'Sidorov', '1987-04-20', 'pavel@example.com', false, NOW(),NOW()),
+(10,'Natalia', 'Novikova', '1991-06-18', 'natalia@example.com', true, NOW(),NOW());
 INSERT INTO payment_cards (user_id, number, holder, expiration_date, active, created_at, updated_at)
 VALUES
 (1, '4242424242424242', 'IVAN IVANOV', '2025-12-01', true, NOW(), NOW()),

@@ -5,15 +5,11 @@
 
     <changeSet id="create_users" author="tabletka97">
         <createTable tableName="users">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="surname" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="surname" type="varchar(50)"/>
             <column name="birth_date" type="date"/>
             <column name="email" type="varchar(150)">
                 <constraints nullable="false"/>

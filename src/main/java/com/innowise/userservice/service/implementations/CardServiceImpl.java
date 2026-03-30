@@ -1,4 +1,4 @@
-package com.innowise.userservice.service;
+package com.innowise.userservice.service.implementations;
 
 import com.innowise.userservice.repository.entity.PaymentCard;
 import com.innowise.userservice.repository.entity.User;
@@ -6,9 +6,9 @@ import com.innowise.userservice.repository.interfaces.PaymentCardRepository;
 import com.innowise.userservice.repository.interfaces.UserRepository;
 import com.innowise.userservice.service.dto.CardRequestDto;
 import com.innowise.userservice.service.dto.CardResponseDto;
-import com.innowise.userservice.service.exceptions.ActivationException;
-import com.innowise.userservice.service.exceptions.CardLimitViolationException;
-import com.innowise.userservice.service.exceptions.DeactivationException;
+import com.innowise.userservice.exceptions.ActivationException;
+import com.innowise.userservice.exceptions.CardLimitViolationException;
+import com.innowise.userservice.exceptions.DeactivationException;
 import com.innowise.userservice.service.interfaces.CardService;
 import com.innowise.userservice.service.interfaces.mappers.CardMapper;
 import lombok.extern.slf4j.Slf4j;

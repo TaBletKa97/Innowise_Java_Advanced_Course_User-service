@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @IT
 @AutoConfigureMockMvc
+@WithMockUser(authorities = "ADMIN")
 @Sql(scripts = "/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class UserControllerTest extends BaseTest {
 
@@ -39,6 +41,7 @@ class UserControllerTest extends BaseTest {
     }
 
     @Test
+
     void getAllUsers() throws Exception {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
@@ -54,7 +57,7 @@ class UserControllerTest extends BaseTest {
 
     @Test
     void createUser() throws Exception {
-        UserRequestDto request = new UserRequestDto(null, "SomeName",
+        UserRequestDto request = new UserRequestDto(20L, "SomeName",
                 "SomeSurname", LocalDate.now(), "test@test.com", true);
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)

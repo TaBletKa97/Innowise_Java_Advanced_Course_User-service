@@ -24,7 +24,6 @@ import java.util.Objects;
 public class User implements BaseEntity<Long> {
     @Id
     @Setter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

@@ -1,4 +1,4 @@
-package com.innowise.userservice.service.exceptions;
+package com.innowise.userservice.exceptions;
 
 public class ActivationException extends RuntimeException {
     public static final String ACTIVATION_ERROR_MESSAGE = "Target instance is already active";
