@@ -13,9 +13,10 @@ spring:
   profiles:
     active: docker
 
-
   cache:
     type: redis
+    redis:
+      time-to-live: 300s
 
   liquibase:
     change-log: db/changelog/main-changelog.xml
