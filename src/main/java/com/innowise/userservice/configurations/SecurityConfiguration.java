@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                                 )
                 )
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/actuator/health/liveness").permitAll()
                         .requestMatchers("/users/**", "/cards/**").authenticated()
                         .requestMatchers("/**").hasRole("ADMIN"))
                 .build();
