@@ -25,6 +25,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
                 .addFilterBefore(anotherSecurityFilter, UsernamePasswordAuthenticationFilter.class)
+                .anonymous(AbstractHttpConfigurer::disable)
                 .exceptionHandling(
                         configurer -> configurer
                                 .authenticationEntryPoint(
@@ -33,13 +34,9 @@ public class SecurityConfiguration {
                                             response.getWriter().print("Authentication required");
                                         })
                                 )
-                                .accessDeniedHandler(
-                                        (request, response, accessDeniedException) -> {
-                                            response.setStatus(HttpStatus.FORBIDDEN.value());
-                                            response.getWriter().print("Access denied");
-                                        })
                 )
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/actuator/health/*").permitAll()
                         .requestMatchers("/users/**", "/cards/**").authenticated()
                         .requestMatchers("/**").hasRole("ADMIN"))
                 .build();

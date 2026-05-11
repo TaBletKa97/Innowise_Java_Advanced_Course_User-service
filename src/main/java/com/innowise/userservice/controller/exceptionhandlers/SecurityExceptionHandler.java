@@ -24,6 +24,6 @@ public class SecurityExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<String> handlingAuthorizationDeniedException(AuthorizationDeniedException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 }

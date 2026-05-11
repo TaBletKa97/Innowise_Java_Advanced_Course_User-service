@@ -42,6 +42,7 @@ public class AnotherSecurityFilter extends OncePerRequestFilter {
                                     null,
                                     List.of(new SimpleGrantedAuthority(role)));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    log.debug("Authentication Success. id {}, role {}", id, role);
                 }
             }
         } catch (NumberFormatException e) {
